@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "RestaurantDataService": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ACCEPT":"application/json, text/plain, */*",
+        "ACCEPT_ENCODING":"gzip, deflate, br, zstd",
+        "ACCEPT_LANGUAGE":"en-US,en;q=0.5",
+        "API_VERSION":"7",
+        "CONNECTION":"keep-alive",
+        "DPS_SESSION_ID":"eyJzZXNzaW9uX2lkIjoiMmRmODA0YTQyYTk5MDZiM2ZhODMzZTE5ZTI4YTJkN2EiLCJwZXJzZXVzX2lkIjoiMTcyMTA3NzcxNTQ3Mi41MjYyODI5Mjg2NDYzNzk2NjYuNHFnMHYxOWR5aCIsInRpbWVzdGFtcCI6MTcyMTA3Nzc1OX0=",
+        "HOST":"tr.fd-api.com",
+        "ORIGIN":"https://www.yemeksepeti.com",
+        "PERSEUS_CLIENT_ID":"1721077715472.526282928646379666.4qg0v19dyh",
+        "PERSEUS_SESSION_ID":"1721077715472.159443783659007364.xd3i2h2e42",
+        "REFERER":"https://www.yemeksepeti.com/",
+        "SEC_FETCH_DEST":"empty",
+        "SEC_FETCH_MODE":"cors",
+        "SEC_FETCH_SITE":"cross-site",
+        "TE":"trailers",
+        "USER_AGENT":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0",
+        "X_FP_API_KEY":"volo",
+        "X_PD_LANGUAGE_ID":"2",
+        "HEALTHCHECK_INTERVAL": "1",
+        "TASK_SERVICE_INTERVAL": "24",
+        "CONNECTION_STRING":  "Host=localhost;Port=5432;Username=kepce;Password=;Database=restaurantdata;",
+        "INITIAL_PATH": "https://tr.fd-api.com/api/v5/vendors/",
+        "QUERY_PATH": "?include=menus,bundles,multiple_discounts,payment_types&language_id=2&opening_type=delivery&basket_currency=TRY",
+        "SLEEP_INTERVAL_BETWEEN_RESTAURANTS": "10000"
+      }
+    }
+  }
+}
