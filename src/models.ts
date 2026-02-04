@@ -238,3 +238,23 @@ export interface Metadata {
     timezone?: string;
     is_flood_feature_closed?: boolean;
 }
+
+export interface AutocompleteResponse {
+    suggestions: {
+        items: SuggestionGroup[];
+    };
+    deeplinks: {
+        vendors: any[];
+    };
+}
+
+export interface SuggestionGroup {
+    headline: string;
+    suggestion_type: string;
+    items: SuggestionItem[];
+}
+
+export interface SuggestionItem {
+    keyword: string;
+    tracking_code: string;
+}

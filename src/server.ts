@@ -1,5 +1,5 @@
 import express from 'express';
-import { fetchRestaurantData } from './scraper.js';
+import { fetchRestaurantData, fetchAutocomplete } from './scraper.js';
 import { extractRestaurantId } from './utils.js';
 import * as dotenv from 'dotenv';
 
@@ -37,6 +37,30 @@ app.get('/scrape', async (req, res) => {
     } catch (error) {
         console.error("Error during scraping:", error);
         return res.status(500).json({ error: "An internal error occurred during scraping." });
+    }
+});
+
+// Endpoint for autocomplete based on coordinates
+// Usage: GET /autocomplete?lat=41.0627474&lng=28.993111
+app.get('/autocomplete', async (req, res) => {
+    const lat = parseFloat(req.query.lat as string);
+    const lng = parseFloat(req.query.lng as string);
+
+    if (isNaN(lat) || isNaN(lng)) {
+        return res.status(400).json({ error: "Missing or invalid 'lat' or 'lng' query parameters." });
+    }
+
+    try {
+        const result = await fetchAutocomplete(lat, lng);
+
+        if (result) {
+            return res.json(result);
+        } else {
+            return res.status(404).json({ error: "Failed to fetch autocomplete suggestions." });
+        }
+    } catch (error) {
+        console.error("Error during autocomplete fetch:", error);
+        return res.status(500).json({ error: "An internal error occurred during autocomplete fetch." });
     }
 });
 
