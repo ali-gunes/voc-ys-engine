@@ -258,3 +258,87 @@ export interface SuggestionItem {
     keyword: string;
     tracking_code: string;
 }
+
+// --- GraphQL Models ---
+
+export interface GraphQLResponse {
+    data: {
+        vendorListingPage: {
+            components: GraphQLComponent[];
+        };
+    };
+}
+
+export type GraphQLComponent = SwimlaneComponent | CampaignCarouselComponent;
+
+export interface SwimlaneComponent {
+    __typename: "SwimlaneComponent";
+    id: string;
+    headline: string;
+    entities: (CuisineEntity | VendorDataEntity)[];
+    pagination?: {
+        total: number;
+        returned: number;
+    };
+}
+
+export interface CampaignCarouselComponent {
+    __typename: "CampaignCarouselComponent";
+    id: string;
+    campaigns: Campaign[];
+}
+
+export interface CuisineEntity {
+    __typename: "Cuisine";
+    id: string;
+    name: string;
+    imageUrl: string;
+}
+
+export interface VendorDataEntity {
+    __typename: "VendorData";
+    id?: string;
+    code: string;
+    name: string;
+    urlKey: string;
+    availability: {
+        status: string;
+        distanceInMeters: number;
+    };
+    vendorRating: {
+        count: number;
+        value: number;
+    };
+    images: {
+        listing: string;
+        logo: string;
+    };
+    dynamicPricing: {
+        deliveryFee: {
+            total: number;
+        };
+        minimumOrderValue: {
+            total: number;
+        };
+    };
+    timeEstimations: {
+        delivery: {
+            duration: {
+                upperLimitInMinutes: number;
+                lowerLimitInMinutes: number;
+            };
+        };
+    };
+    vendorTile: any;
+}
+
+export interface Campaign {
+    id: string;
+    title: string;
+    imageUrls: {
+        small: string;
+        medium: string;
+        large: string;
+    };
+    urlKey: string;
+}

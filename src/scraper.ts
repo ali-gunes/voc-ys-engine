@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { AxiosRequestHeaders } from 'axios';
 import * as dotenv from 'dotenv';
-import type { YemeksepetiVendorResponse, AutocompleteResponse } from './models.js';
+import type { YemeksepetiVendorResponse, AutocompleteResponse, GraphQLResponse } from './models.js';
 
 dotenv.config();
 
@@ -110,6 +110,87 @@ export async function fetchAutocomplete(lat: number, lng: number): Promise<Autoc
     } catch (error: any) {
         if (axios.isAxiosError(error)) {
             console.error(`Error fetching autocomplete: ${error.message}`);
+            if (error.response) {
+                console.error(`Status: ${error.response.status}`);
+                console.error(`Data:`, error.response.data);
+            }
+        } else {
+            console.error(`An unexpected error occurred:`, error);
+        }
+        return null;
+    }
+}
+
+export async function fetchGraphQLData(lat: number, lng: number): Promise<GraphQLResponse | null> {
+    const url = 'https://tr.fd-api.com/graphql';
+
+    const headers: any = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Encoding': 'gzip, deflate, br, zstd',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Content-Type': 'application/json;charset=utf-8',
+        'User-Agent': process.env.USER_AGENT || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0',
+        'perseus-client-id': process.env.PERSEUS_CLIENT_ID,
+        'perseus-session-id': process.env.PERSEUS_SESSION_ID,
+        'dps-session-id': process.env.DPS_SESSION_ID,
+        'Platform': 'web',
+        'App-Version': 'VENDOR-LIST-MICROFRONTEND.26.04.0006',
+        'X-FP-API-KEY': 'volo',
+        'Customer-Latitude': lat.toString(),
+        'Customer-Longitude': lng.toString(),
+        'Display-Context': 'rlp',
+        'locale': 'tr_TR',
+        'apollographql-client-name': 'web',
+        'apollographql-client-version': 'VENDOR-LIST-MICROFRONTEND.26.04.0006',
+        'Origin': 'https://www.yemeksepeti.com',
+        'Referer': 'https://www.yemeksepeti.com/',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'cross-site',
+    };
+
+    const payload = {
+        "extensions": {
+            "persistedQuery": {
+                "sha256Hash": "71df256e1a0d7a7df73b0b60a69b9e2a19c2fdc8e17b6e9543dcd64101271cbf",
+                "version": 1
+            }
+        },
+        "variables": {
+            "input": {
+                "expeditionType": "DELIVERY",
+                "latitude": lat,
+                "locale": "tr_TR",
+                "longitude": lng,
+                "customerType": "B2C",
+                "featureFlags": [
+                    { "name": "dynamic-pricing-indicator", "value": "Original" },
+                    { "name": "saver-delivery-upper-funnel", "value": "Control" },
+                    { "name": "pd-mp-homescreen-full-federation-listing", "value": "Control" },
+                    { "name": "vdp_citadel-tech-integration", "value": "Control" },
+                    { "name": "pd-mp-slp-replatform-federated", "value": "Control" }
+                ],
+                "languageId": 2,
+                "page": "RESTAURANT_LANDING_PAGE"
+            }
+        }
+    };
+
+    try {
+        console.log(`Fetching GraphQL restaurants for Lat: ${lat}, Lng: ${lng}...`);
+        const response = await axios.post<GraphQLResponse>(url, payload, {
+            headers: headers as AxiosRequestHeaders,
+        });
+
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            console.error(`Unexpected status code: ${response.status}`);
+            return null;
+        }
+    } catch (error: any) {
+        if (axios.isAxiosError(error)) {
+            console.error(`Error fetching GraphQL data: ${error.message}`);
             if (error.response) {
                 console.error(`Status: ${error.response.status}`);
                 console.error(`Data:`, error.response.data);

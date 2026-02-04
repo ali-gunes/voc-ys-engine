@@ -78,6 +78,52 @@ curl "http://localhost:3000/autocomplete?lat=41.0627474&lng=28.993111"
 
 ---
 
+### 3. Fetch Restaurant Listings (GraphQL)
+Fetches a list of restaurants available in a specific geographic area using a GraphQL query.
+
+- **URL**: `/restaurants`
+- **Method**: `GET`
+- **Query Parameters**:
+    - `lat` (Required): Latitude coordinate (e.g., `41.0627474`).
+    - `lng` (Required): Longitude coordinate (e.g., `28.993111`).
+
+**Example Request**:
+```bash
+curl "http://localhost:3000/restaurants?lat=41.0627474&lng=28.993111"
+```
+
+**Example Response**:
+```json
+{
+  "data": {
+    "vendorListingPage": {
+      "components": [
+        {
+          "__typename": "SwimlaneComponent",
+          "headline": "Mutfaklar",
+          "entities": [...]
+        },
+        {
+          "__typename": "SwimlaneComponent",
+          "headline": "Restoranlar",
+          "entities": [
+            {
+              "__typename": "VendorData",
+              "name": "Hey Döner",
+              "urlKey": "hey-doner-kdr3",
+              "availability": { "status": "OPEN", ... }
+            }
+          ]
+        }
+      ],
+      "totalVendors": 4365
+    }
+  }
+}
+```
+
+---
+
 ## Error Handling
 
 | Status Code | Description |
